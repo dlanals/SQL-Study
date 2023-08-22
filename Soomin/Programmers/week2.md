@@ -64,9 +64,3 @@ MAIN QUERY
 - Where 절에서 Null인 값 필터링 하고싶을 때 IS NULL 사용
 - ex) WHERE name IS NULL
 - 반대의 경우 IS NOT NULL
-
-
-            ELSE TRUNCATE(PRICE, -4)
-        END) AS PRICE_GROUP,
-        COUNT(PRODUCT_ID) AS PRODUCTS
-
