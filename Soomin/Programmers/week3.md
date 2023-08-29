@@ -54,3 +54,27 @@ WHERE MONTH(APNT_YMD) = '05' AND YEAR(APNT_YMD) = '2022'
 GROUP BY MCDP_CD
 ORDER BY 5월예약건수 ASC, 진료과코드 ASC
 ```
+
+## 입양 시각 구하기 2 (Level 4) - SET
+- 단순히 Groupby 해버리면 입양이 발생하지 않은 시간대는 출력되지 않음
+  ```sql
+  SELECT HOUR(DATETIME) AS HOUR, COUNT(*) AS COUNT
+  FROM ANIMAL_OUTS
+  GROUP BY HOUR(DATETIME)
+  ORDER BY HOUR
+  ```
+  
+- 데이터가 없는 시간대를 위해 set 사용
+  ```sql
+  SET @HOUR = -1;
+  SELECT (@HOUR := @HOUR +1) AS HOUR,
+      (SELECT COUNT(HOUR(DATETIME)) 
+      FROM ANIMAL_OUTS 
+      WHERE HOUR(DATETIME)=@HOUR) AS COUNT 
+      FROM ANIMAL_OUTS
+  WHERE @HOUR < 23;
+  ```
+  - SET은 어떤 변수에 특정 값 할당할 떄 쓰는 명령어
+  - SET @hour := -1 : 사용자 지정 변수 hour을 선언, 변수 값은 -1 (0시부터 나타내야함, 1씩 증가할거라)
+  - @hour := @hour + 1 : ROW가 한번 지날 때마다 +1 (1씩 시간대가 증가)
+  - WHERE @hour < 23 : 24시까지만 나타내고 종료
