@@ -15,3 +15,29 @@ FROM PRODUCT
 GROUP BY PRICE_GROUP
 ORDER BY PRICE_GROUP
 ```
+
+## 자동차 종류 별 특정 옵션이 포함된 자동차 수 구하기 (Level 2)
+- 내 답안
+```sql
+SELECT CAR_TYPE, COUNT(*) AS CARS
+FROM CAR_RENTAL_COMPANY_CAR
+WHERE OPTIONS LIKE '%통풍시트%' OR OPTIONS LIKE '%열선시트%' OR OPTIONS LIKE '%가죽시트%'
+GROUP BY CAR_TYPE
+ORDER BY CAR_TYPE
+```
+
+- 다른 방법
+```sql
+SELECT  CAR_TYPE
+      , COUNT(*) AS CARS
+FROM  CAR_RENTAL_COMPANY_CAR
+WHERE  OPTIONS REGEXP '통풍시트|열선시트|가죽시트'
+GROUP
+  BY  CAR_TYPE
+ORDER
+  BY CAR_TYPE ASC ;
+```
+  - 정규식 이용 (REGEXP)
+
+```sql
+```
