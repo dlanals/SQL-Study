@@ -39,5 +39,18 @@ ORDER
 ```
   - 정규식 이용 (REGEXP)
 
+## 진료과별 총 예약 횟수 출력하기 (Level 2)
+- 오답 이유
+  - ORDER BY 문에서 '5월예약건수', '진료과코드' 이런식으로 X
+  - GROUP BY, ORDER BY, HAVING 절에 alias를 쓸 경우 그대로 써주거나 `` (Backticks)를 사용
+  - 작은 따옴표를 사용할 경우 따옴표 안 문자로 order by를 해주게 됨
+- MONTH, YEAR 함수 사용, 비교 시 연,월,일을 따옴표 안에 넣어주기
+  - 실행해본 결과 큰 따옴표, 따옴표 없이도 잘 돌아감
+
 ```sql
+SELECT MCDP_CD AS '진료과코드', COUNT(PT_NO) AS '5월예약건수'
+FROM APPOINTMENT
+WHERE MONTH(APNT_YMD) = '05' AND YEAR(APNT_YMD) = '2022'
+GROUP BY MCDP_CD
+ORDER BY 5월예약건수 ASC, 진료과코드 ASC
 ```
