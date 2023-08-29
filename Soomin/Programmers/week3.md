@@ -55,6 +55,30 @@ GROUP BY MCDP_CD
 ORDER BY 5월예약건수 ASC, 진료과코드 ASC
 ```
 
+## 즐겨찾기가 가장 많은 식당 정보 출력하기 (Level 3)
+- 오답
+  ```sql
+  SELECT FOOD_TYPE, REST_ID, REST_NAME, MAX(FAVORITES) AS FAVORITES
+  FROM REST_INFO
+  GROUP BY FOOD_TYPE
+  ORDER BY FOOD_TYPE DESC
+  ```
+  - MYSQL에서는 GROUP BY로 묶으면 가장 상단에 있는 데이터들을 임의로 가져오게 됨
+  - 따라서 위 코드는 최대 즐겨찾기 수를 갖는 식당 정보를 가져오는게 아니라, 각 그룹에서 가장 상단에 있는 데이터를 가져온 것
+ 
+- 정답
+  ```sql
+  SELECT FOOD_TYPE, REST_ID, REST_NAME, FAVORITES
+  FROM REST_INFO
+  WHERE (FOOD_TYPE, FAVORITES) 
+  IN 
+    (SELECT FOOD_TYPE, MAX(FAVORITES)
+    FROM REST_INFO
+    GROUP BY FOOD_TYPE )
+  ORDER BY FOOD_TYPE DESC
+  ```
+
+
 ## 입양 시각 구하기 2 (Level 4) - SET
 - 단순히 Groupby 해버리면 입양이 발생하지 않은 시간대는 출력되지 않음
   ```sql
