@@ -78,6 +78,34 @@ ORDER BY 5월예약건수 ASC, 진료과코드 ASC
   ORDER BY FOOD_TYPE DESC
   ```
 
+## 자동차 대여 기록에서 대여중 / 대여 가능 여부 구분하기 (Level 3)
+- 날짜 비교할 때 '' 사용할 것
+- 처음 짠 코드 (오답)
+  ```sql
+  SELECT DISTINCT CAR_ID,
+      CASE
+          WHEN START_DATE <= '2022-10-16' AND END_DATE >= '2022-10-16' THEN '대여중'
+          ELSE '대여 가능'
+      END AS AVAILABILITY
+  FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+  ORDER BY CAR_ID DESC
+  ```
+  - 이렇게 했더니 아래 결과와 같이 자전거가 여러번 대여되는 경우 중복 발생
+    <img width="408" alt="image" src="https://github.com/dlanals/SQL-Study/assets/97150219/c048d73c-d77e-426b-958c-7bc0ea8afefb">
+- 정답
+  ```sql
+  SELECT DISTINCT CAR_ID,
+      CASE
+          WHEN CAR_ID IN (SELECT CAR_ID
+                          FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+                          WHERE '2022-10-16' BETWEEN START_DATE AND END_DATE) THEN '대여중'
+          ELSE '대여 가능'
+      END AS AVAILABILITY
+  FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
+  ORDER BY CAR_ID DESC
+  ```
+  - BETWEEN 사용
+  - 서브쿼리 사용
 
 ## 입양 시각 구하기 2 (Level 4) - SET
 - 단순히 Groupby 해버리면 입양이 발생하지 않은 시간대는 출력되지 않음
