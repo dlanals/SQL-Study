@@ -91,6 +91,7 @@ ORDER BY 5월예약건수 ASC, 진료과코드 ASC
   ORDER BY CAR_ID DESC
   ```
   - 이렇게 했더니 아래 결과와 같이 자전거가 여러번 대여되는 경우 중복 발생
+    
     <img width="408" alt="image" src="https://github.com/dlanals/SQL-Study/assets/97150219/c048d73c-d77e-426b-958c-7bc0ea8afefb">
 - 정답
   ```sql
